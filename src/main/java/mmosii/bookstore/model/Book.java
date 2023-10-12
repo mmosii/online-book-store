@@ -1,12 +1,12 @@
 package mmosii.bookstore.model;
 
-import java.math.BigDecimal;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import java.math.BigDecimal;
 import lombok.Data;
 
 @Entity
@@ -15,15 +15,15 @@ import lombok.Data;
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @Column(nullable = false)
-    String title;
+    private String title;
     @Column(nullable = false)
-    String author;
+    private String author;
     @Column(nullable = false)
-    String isbn;
+    private String isbn;
     @Column(nullable = false)
-    BigDecimal price;
-    String description;
-    String coverImage;
+    private BigDecimal price;
+    private String description;
+    private String coverImage;
 }
