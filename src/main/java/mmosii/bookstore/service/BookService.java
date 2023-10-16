@@ -1,10 +1,13 @@
 package mmosii.bookstore.service;
 
 import java.util.List;
-import mmosii.bookstore.model.Book;
+import mmosii.bookstore.dto.BookDto;
+import mmosii.bookstore.dto.CreateBookRequestDto;
 
 public interface BookService {
-    Book save(Book book);
+    BookDto save(CreateBookRequestDto requestDto);
 
-    List<Book> findAll();
+    BookDto getBookById(Long id);
+
+    List<BookDto> findAll();
 }
