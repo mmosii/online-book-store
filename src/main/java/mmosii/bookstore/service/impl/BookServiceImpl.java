@@ -2,9 +2,9 @@ package mmosii.bookstore.service.impl;
 
 import java.util.List;
 import lombok.RequiredArgsConstructor;
-import mmosii.bookstore.dto.BookDto;
-import mmosii.bookstore.dto.BookSearchParametersDto;
-import mmosii.bookstore.dto.CreateBookRequestDto;
+import mmosii.bookstore.dto.book.BookDto;
+import mmosii.bookstore.dto.book.BookSearchParametersDto;
+import mmosii.bookstore.dto.book.CreateBookRequestDto;
 import mmosii.bookstore.exception.EntityNotFoundException;
 import mmosii.bookstore.mapper.BookMapper;
 import mmosii.bookstore.model.Book;

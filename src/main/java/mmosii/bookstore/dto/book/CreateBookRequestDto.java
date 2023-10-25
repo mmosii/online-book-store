@@ -1,4 +1,4 @@
-package mmosii.bookstore.dto;
+package mmosii.bookstore.dto.book;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

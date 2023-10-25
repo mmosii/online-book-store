@@ -1,7 +1,7 @@
 package mmosii.bookstore.repository.book;
 
 import lombok.RequiredArgsConstructor;
-import mmosii.bookstore.dto.BookSearchParametersDto;
+import mmosii.bookstore.dto.book.BookSearchParametersDto;
 import mmosii.bookstore.model.Book;
 import mmosii.bookstore.repository.SpecificationBuilder;
 import mmosii.bookstore.repository.SpecificationProviderManager;
