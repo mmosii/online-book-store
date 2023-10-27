@@ -1,9 +1,9 @@
 package mmosii.bookstore.service;
 
 import java.util.List;
-import mmosii.bookstore.dto.BookDto;
-import mmosii.bookstore.dto.BookSearchParametersDto;
-import mmosii.bookstore.dto.CreateBookRequestDto;
+import mmosii.bookstore.dto.book.BookDto;
+import mmosii.bookstore.dto.book.BookSearchParametersDto;
+import mmosii.bookstore.dto.book.CreateBookRequestDto;
 import org.springframework.data.domain.Pageable;
 
 public interface BookService {
