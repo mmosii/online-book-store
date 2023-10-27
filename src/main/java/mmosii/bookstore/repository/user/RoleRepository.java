@@ -5,5 +5,5 @@ import mmosii.bookstore.model.RoleName;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface RoleRepository extends JpaRepository<Role, Long> {
-    Role findAllByName(RoleName name);
+    Role findRoleByName(RoleName name);
 }

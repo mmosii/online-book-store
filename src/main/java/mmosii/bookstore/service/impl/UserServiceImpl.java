@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
         User savedUser = new User();
         savedUser.setEmail(request.email());
         savedUser.setRoles(new HashSet<>(Arrays.asList(
-                roleRepository.findAllByName(RoleName.ROLE_USER))));
+                roleRepository.findRoleByName(RoleName.ROLE_USER))));
         savedUser.setFirstName(request.firstName());
         savedUser.setLastName(request.lastName());
         savedUser.setShippingAddress(request.shippingAddress());
