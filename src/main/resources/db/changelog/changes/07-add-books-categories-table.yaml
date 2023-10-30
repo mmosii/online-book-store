@@ -1,0 +1,14 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-books-categories-table
+      author: mmosii
+      changes:
+        - createTable:
+            tableName: books_categories
+            columns:
+              - column:
+                  name: book_id
+                  type: bigint
+              - column:
+                  name: category_id
+                  type: bigint
