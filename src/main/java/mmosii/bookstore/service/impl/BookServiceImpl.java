@@ -1,7 +1,8 @@
 package mmosii.bookstore.service.impl;
 
-import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import mmosii.bookstore.dto.book.BookDto;
 import mmosii.bookstore.dto.book.BookDtoWithoutCategoryIds;
@@ -10,6 +11,7 @@ import mmosii.bookstore.dto.book.CreateBookRequestDto;
 import mmosii.bookstore.exception.EntityNotFoundException;
 import mmosii.bookstore.mapper.BookMapper;
 import mmosii.bookstore.model.Book;
+import mmosii.bookstore.model.Category;
 import mmosii.bookstore.repository.book.BookRepository;
 import mmosii.bookstore.repository.book.BookSpecificationBuilder;
 import mmosii.bookstore.repository.book.CategoryRepository;
@@ -84,9 +86,9 @@ public class BookServiceImpl implements BookService {
     }
 
     private void setCategories(CreateBookRequestDto requestDto, Book book) {
-        if (requestDto.categoryIds() != null) {
-            book.setCategories(new HashSet<>(
-                    categoryRepository.findAllById(requestDto.categoryIds())));
-        }
+        Set<Category> categorySet = requestDto.categoryIds().stream()
+                .map(categoryRepository::getReferenceById)
+                .collect(Collectors.toSet());
+        book.setCategories(categorySet);
     }
 }

@@ -11,6 +11,7 @@ import mmosii.bookstore.dto.category.CategoryDto;
 import mmosii.bookstore.dto.category.CreateCategoryRequestDto;
 import mmosii.bookstore.service.BookService;
 import mmosii.bookstore.service.CategoryService;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -49,7 +50,7 @@ public class CategoryController {
     @GetMapping
     @Operation(summary = "Get all categories",
             description = "Get a list of all available categories")
-    public List<CategoryDto> getAll(@PageableDefault(size = 5) Pageable pageable) {
+    public List<CategoryDto> getAll(@ParameterObject @PageableDefault(size = 5) Pageable pageable) {
         return categoryService.findAll(pageable);
     }
 

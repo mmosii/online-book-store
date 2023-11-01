@@ -10,6 +10,7 @@ import mmosii.bookstore.dto.book.BookDto;
 import mmosii.bookstore.dto.book.BookSearchParametersDto;
 import mmosii.bookstore.dto.book.CreateBookRequestDto;
 import mmosii.bookstore.service.BookService;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -36,7 +37,7 @@ public class BookController {
     @PreAuthorize("hasAuthority('USER')")
     @GetMapping
     @Operation(summary = "Get all books", description = "Get a list of all available books")
-    public List<BookDto> findAll(@PageableDefault(size = 5) Pageable pageable) {
+    public List<BookDto> findAll(@ParameterObject @PageableDefault(size = 5) Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
