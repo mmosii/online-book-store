@@ -41,6 +41,7 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         antMatcher("/api/auth/**"),
                                         antMatcher("/swagger-ui/**"),
+                                        antMatcher("/error"),
                                         antMatcher("/v3/api-docs/**")
                                 )
                                 .permitAll()
