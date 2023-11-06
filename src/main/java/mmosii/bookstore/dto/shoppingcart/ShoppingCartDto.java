@@ -2,5 +2,7 @@ package mmosii.bookstore.dto.shoppingcart;
 
 import java.util.List;
 
-public record ShoppingCartDto(Long id, Long userId, List<CartItemDto> cartItems) {
+public record ShoppingCartDto(Long id,
+                              Long userId,
+                              List<CartItemDto> cartItems) {
 }

@@ -3,6 +3,7 @@ package mmosii.bookstore.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
 import mmosii.bookstore.dto.shoppingcart.CartItemDto;
 import mmosii.bookstore.dto.shoppingcart.CartItemRequestDto;
@@ -41,7 +42,6 @@ public class ShoppingCartController {
 
     @PreAuthorize("hasAuthority('USER')")
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Add book to cart",
             description = "Add book to the shopping cart")
     public CartItemDto addBookToCart(@RequestBody @Valid CartItemRequestDto requestDto) {
@@ -52,7 +52,7 @@ public class ShoppingCartController {
     @PutMapping("/cart-items/{cartItemId}")
     @Operation(summary = "Update quantity",
             description = "Update quantity of a book in the shopping cart")
-    public CartItemDto updateBookQuantity(@PathVariable Long cartItemId,
+    public CartItemDto updateBookQuantity(@PathVariable @Positive Long cartItemId,
                                           @RequestBody @Valid CartItemUpdateDto updateDto) {
         return shoppingCartService.updateCartItem(cartItemId, updateDto);
     }
@@ -62,7 +62,7 @@ public class ShoppingCartController {
     @DeleteMapping("/cart-items/{cartItemId}")
     @Operation(summary = "Delete book from cart",
             description = "Remove a book from the shopping cart")
-    public void deleteBookFromCart(@PathVariable Long cartItemId) {
+    public void deleteBookFromCart(@PathVariable @Positive Long cartItemId) {
         shoppingCartService.removeCartItem(cartItemId);
     }
 }

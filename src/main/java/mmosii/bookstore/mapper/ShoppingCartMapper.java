@@ -19,12 +19,7 @@ public interface ShoppingCartMapper {
     @Mapping(source = "user.id", target = "userId")
     ShoppingCartDto toDto(ShoppingCart shoppingCart);
 
-    default CartItemDto toCartItemDto(CartItem cartItem) {
-        return new CartItemDto(
-                cartItem.getId(),
-                cartItem.getBook().getId(),
-                cartItem.getBook().getTitle(),
-                cartItem.getQuantity()
-        );
-    }
+    @Mapping(source = "book.id", target = "bookId")
+    @Mapping(source = "book.title", target = "bookTitle")
+    CartItemDto toCartItemDto(CartItem cartItem);
 }

@@ -18,6 +18,7 @@ import mmosii.bookstore.repository.user.UserRepository;
 import mmosii.bookstore.service.ShoppingCartService;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -44,13 +45,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return cartItemMapper.toDto(cartItemRepository.save(cartItem));
     }
 
+    @Transactional
     @Override
     public CartItemDto updateCartItem(Long itemId, CartItemUpdateDto updateDto) {
         ShoppingCart shoppingCart = getUserCart();
         CartItem cartItem = findCartItem(
                 itemId, shoppingCart.getId(), shoppingCart.getUser().getId());
         cartItem.setQuantity(updateDto.quantity());
-        cartItemRepository.save(cartItem);
         return cartItemMapper.toDto(cartItem);
     }
 
