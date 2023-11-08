@@ -45,28 +45,20 @@ public class OrderServiceImpl implements OrderService {
         ShoppingCart shoppingCart = shoppingCartRepository.findByUserId(user.getId()).orElseThrow(()
                 -> new EntityNotFoundException("Can't find shopping cart by users id: "
                                                + user.getId()));
+        Order order = createNewOrder(user, requestDto);
         Set<CartItem> cartItems = shoppingCart.getCartItems();
-        Order order = new Order();
-        order.setOrderDate(LocalDateTime.now());
-        order.setUser(user);
-        order.setStatus(Order.Status.NEW);
-        order.setShippingAddress(requestDto.shippingAddress());
-        BigDecimal total = cartItems.stream()
-                .map(i -> i.getBook().getPrice().multiply(BigDecimal.valueOf(i.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
-        order.setTotal(total);
-        orderRepository.save(order);
-
         Set<OrderItem> orderItems = new HashSet<>();
-        for (CartItem cartItem : shoppingCart.getCartItems()) {
+        for (CartItem cartItem : cartItems) {
             OrderItem orderItem = new OrderItem();
             orderItem.setBook(cartItem.getBook());
             orderItem.setQuantity(cartItem.getQuantity());
             orderItem.setOrder(order);
             orderItem.setPrice(orderItem.getBook().getPrice());
             orderItems.add(orderItemRepository.save(orderItem));
+            order.setTotal(order.getTotal()
+                    .add(orderItem.getPrice()
+                            .multiply(BigDecimal.valueOf(orderItem.getQuantity()))));
         }
-
         shoppingCartRepository.delete(shoppingCart);
         order.setOrderItems(orderItems);
         return orderMapper.toDto(orderRepository.save(order));
@@ -87,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderItemDto> getOrderItemsByOrder(Long id) {
-        return orderItemRepository.findAllByOrderId(id)
+        return orderItemRepository.findAllByOrderId(findOrder(id).getId())
                 .stream()
                 .map(orderItemMapper::toDto)
                 .toList();
@@ -96,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderItemDto getOrderItemById(Long orderId, Long id) {
         return orderItemMapper.toDto(orderItemRepository
-                .findByIdAndOrderId(id, orderId)
+                .findByIdAndOrderId(id, findOrder(orderId).getId())
                 .orElseThrow(()
                         -> new EntityNotFoundException(
                         "Can't find order item with id: %d for order with id: %d"
@@ -107,5 +99,20 @@ public class OrderServiceImpl implements OrderService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         return userRepository.findByEmail(email).orElseThrow(()
                 -> new EntityNotFoundException("Can't find user by email " + email));
+    }
+
+    private Order createNewOrder(User user, CreateOrderRequestDto requestDto) {
+        Order order = new Order();
+        order.setOrderDate(LocalDateTime.now());
+        order.setUser(user);
+        order.setStatus(Order.Status.NEW);
+        order.setShippingAddress(requestDto.shippingAddress());
+        order.setTotal(BigDecimal.ZERO);
+        return orderRepository.save(order);
+    }
+
+    private Order findOrder(Long id) {
+        return orderRepository.findByUserIdAndId(findUser().getId(), id).orElseThrow(()
+                -> new EntityNotFoundException("Can't find order for current user with id: " + id));
     }
 }
