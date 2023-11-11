@@ -49,11 +49,8 @@ public class OrderServiceImpl implements OrderService {
         Set<CartItem> cartItems = shoppingCart.getCartItems();
         Set<OrderItem> orderItems = new HashSet<>();
         for (CartItem cartItem : cartItems) {
-            OrderItem orderItem = new OrderItem();
-            orderItem.setBook(cartItem.getBook());
-            orderItem.setQuantity(cartItem.getQuantity());
+            OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
             orderItem.setOrder(order);
-            orderItem.setPrice(orderItem.getBook().getPrice());
             orderItems.add(orderItemRepository.save(orderItem));
             order.setTotal(order.getTotal()
                     .add(orderItem.getPrice()
@@ -74,7 +71,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto updateOrder(Long id, UpdateStatusRequestDto requestDto) {
         Order order = orderRepository.getReferenceById(id);
         order.setStatus(Order.Status.valueOf(requestDto.status()));
-        return orderMapper.toDto(orderRepository.save(order));
+        return orderMapper.toDto(order);
     }
 
     @Override
