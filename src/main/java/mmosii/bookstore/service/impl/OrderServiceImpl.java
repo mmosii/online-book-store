@@ -46,18 +46,8 @@ public class OrderServiceImpl implements OrderService {
                 -> new EntityNotFoundException("Can't find shopping cart by users id: "
                                                + user.getId()));
         Order order = createNewOrder(user, requestDto);
-        Set<CartItem> cartItems = shoppingCart.getCartItems();
-        Set<OrderItem> orderItems = new HashSet<>();
-        for (CartItem cartItem : cartItems) {
-            OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
-            orderItem.setOrder(order);
-            orderItems.add(orderItemRepository.save(orderItem));
-            order.setTotal(order.getTotal()
-                    .add(orderItem.getPrice()
-                            .multiply(BigDecimal.valueOf(orderItem.getQuantity()))));
-        }
+        order.setOrderItems(createOrderItems(order, shoppingCart.getCartItems()));
         shoppingCartRepository.delete(shoppingCart);
-        order.setOrderItems(orderItems);
         return orderMapper.toDto(orderRepository.save(order));
     }
 
@@ -111,5 +101,18 @@ public class OrderServiceImpl implements OrderService {
     private Order findOrder(Long id) {
         return orderRepository.findByUserIdAndId(findUser().getId(), id).orElseThrow(()
                 -> new EntityNotFoundException("Can't find order for current user with id: " + id));
+    }
+
+    private Set<OrderItem> createOrderItems(Order order, Set<CartItem> cartItems) {
+        Set<OrderItem> orderItems = new HashSet<>();
+        for (CartItem cartItem : cartItems) {
+            OrderItem orderItem = orderItemMapper.toOrderItem(cartItem);
+            orderItem.setOrder(order);
+            orderItems.add(orderItemRepository.save(orderItem));
+            order.setTotal(order.getTotal()
+                    .add(orderItem.getPrice()
+                            .multiply(BigDecimal.valueOf(orderItem.getQuantity()))));
+        }
+        return orderItems;
     }
 }
