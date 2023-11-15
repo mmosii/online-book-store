@@ -1,11 +1,12 @@
 package mmosii.bookstore.controller;
 
-import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mmosii.bookstore.dto.category.CategoryDto;
 import mmosii.bookstore.dto.category.CreateCategoryRequestDto;
@@ -56,7 +57,8 @@ public class CategoryControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        CategoryDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryDto.class);
+        CategoryDto actual = objectMapper.readValue(result.getResponse()
+                .getContentAsString(), CategoryDto.class);
         assertThat(actual).isNotNull();
         assertThat(actual.id()).isNotNull();
         assertThat(actual.name()).isEqualTo(expected.name());
@@ -76,7 +78,8 @@ public class CategoryControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        CategoryDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), CategoryDto.class);
+        CategoryDto actual = objectMapper.readValue(result.getResponse()
+                .getContentAsString(), CategoryDto.class);
         assertThat(actual).isNotNull();
         assertThat(actual.id()).isEqualTo(expected.id());
         assertThat(actual.name()).isEqualTo(expected.name());

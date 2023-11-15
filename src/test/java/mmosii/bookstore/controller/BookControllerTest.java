@@ -6,6 +6,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,7 +24,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Sql(scripts = "classpath:database/add-books-and-categories-to-books-table.sql")
@@ -62,7 +62,8 @@ public class BookControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
+        BookDto actual = objectMapper.readValue(result.getResponse()
+                .getContentAsString(), BookDto.class);
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isNotNull();
         assertThat(actual.getTitle()).isEqualTo(expected.getTitle());
@@ -83,7 +84,8 @@ public class BookControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        BookDto actual = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
+        BookDto actual = objectMapper.readValue(result.getResponse()
+                .getContentAsString(), BookDto.class);
         assertThat(actual).isNotNull();
         assertThat(actual.getId()).isNotNull();
         assertThat(actual.getTitle()).isEqualTo(expected.getTitle());

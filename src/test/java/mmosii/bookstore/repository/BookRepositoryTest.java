@@ -23,14 +23,14 @@ class BookRepositoryTest {
 
     @Test
     @DisplayName("Find all books with category that not exists")
-    void findAllByCategoryId_NonValidCategory_ReturnsEmptyList(){
+    void findAllByCategoryId_NonValidCategory_ReturnsEmptyList() {
         List<Book> actual = bookRepository.findAllByCategoryId(PageRequest.of(0, 10), 100L);
         Assertions.assertEquals(0, actual.size());
     }
 
     @Test
     @DisplayName("Find all books with existing category")
-    void findAllByCategoryId_ValidCategory_ReturnsExpectedBooks(){
+    void findAllByCategoryId_ValidCategory_ReturnsExpectedBooks() {
         List<Book> actual = bookRepository.findAllByCategoryId(PageRequest.of(0, 10), 2L);
         Assertions.assertEquals(1, actual.size());
         Assertions.assertEquals("Shantaram", actual.get(0).getTitle());
