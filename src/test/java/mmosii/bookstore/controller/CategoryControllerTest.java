@@ -49,20 +49,18 @@ public class CategoryControllerTest {
 
         CategoryDto expected = new CategoryDto(3L, requestDto.name(), requestDto.description());
 
-        String jsonRequest = objectMapper.writeValueAsString(requestDto);
-
         MvcResult result = mockMvc.perform(post("/api/categories/")
-                        .content(jsonRequest)
+                        .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         CategoryDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), CategoryDto.class);
-        assertThat(actual).isNotNull();
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("name", expected.name())
+                .hasFieldOrPropertyWithValue("description", expected.description());
         assertThat(actual.id()).isNotNull();
-        assertThat(actual.name()).isEqualTo(expected.name());
-        assertThat(actual.description()).isEqualTo(expected.description());
     }
 
     @Test
@@ -80,9 +78,9 @@ public class CategoryControllerTest {
 
         CategoryDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), CategoryDto.class);
-        assertThat(actual).isNotNull();
-        assertThat(actual.id()).isEqualTo(expected.id());
-        assertThat(actual.name()).isEqualTo(expected.name());
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("id", expected.id())
+                .hasFieldOrPropertyWithValue("name", expected.name());
     }
 
     @Test

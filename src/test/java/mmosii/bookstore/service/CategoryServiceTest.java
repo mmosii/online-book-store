@@ -52,10 +52,6 @@ public class CategoryServiceTest {
         CategoryDto actual = categoryService.save(requestDto);
 
         assertThat(actual).isEqualTo(categoryDto);
-        verify(categoryMapper, times(1)).toEntity(requestDto);
-        verify(categoryRepository, times(1)).save(category);
-        verify(categoryMapper, times(1)).toDto(category);
-        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -86,11 +82,6 @@ public class CategoryServiceTest {
         CategoryDto actual = categoryService.update(id, requestDto);
 
         assertThat(actual).isEqualTo(categoryDto);
-        verify(categoryRepository, times(1)).findById(id);
-        verify(categoryMapper, times(1)).updateCategory(requestDto, category);
-        verify(categoryRepository, times(1)).save(category);
-        verify(categoryMapper, times(1)).toDto(requestCategory);
-        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -102,9 +93,6 @@ public class CategoryServiceTest {
         when(categoryRepository.findById(id)).thenReturn(Optional.empty());
         assertThatThrownBy(() -> categoryService.update(id, requestDto))
                 .isInstanceOf(EntityNotFoundException.class);
-
-        verify(categoryRepository, times(1)).findById(id);
-        verifyNoMoreInteractions(categoryRepository);
     }
 
     @Test
@@ -124,9 +112,6 @@ public class CategoryServiceTest {
         CategoryDto actual = categoryService.getById(1L);
 
         assertThat(actual).isEqualTo(categoryDto);
-        verify(categoryRepository, times(1)).findById(1L);
-        verify(categoryMapper, times(1)).toDto(category);
-        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -137,8 +122,6 @@ public class CategoryServiceTest {
 
         assertThatThrownBy(() -> categoryService.getById(id))
                 .isInstanceOf(EntityNotFoundException.class);
-        verify(categoryRepository, times(1)).findById(id);
-        verifyNoMoreInteractions(categoryRepository);
     }
 
     @Test

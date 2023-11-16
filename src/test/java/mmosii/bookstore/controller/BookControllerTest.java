@@ -54,19 +54,18 @@ public class BookControllerTest {
         BookDto expected = new BookDto();
         expected.setTitle(requestDto.title());
 
-        String jsonRequest = objectMapper.writeValueAsString(requestDto);
-
         MvcResult result = mockMvc.perform(post("/api/books")
-                        .content(jsonRequest)
+                        .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         BookDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), BookDto.class);
-        assertThat(actual).isNotNull();
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("title", expected.getTitle());
         assertThat(actual.getId()).isNotNull();
-        assertThat(actual.getTitle()).isEqualTo(expected.getTitle());
+
     }
 
     @Test
@@ -86,10 +85,11 @@ public class BookControllerTest {
 
         BookDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), BookDto.class);
-        assertThat(actual).isNotNull();
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("title", expected.getTitle())
+                .hasFieldOrPropertyWithValue("price", expected.getPrice());
         assertThat(actual.getId()).isNotNull();
-        assertThat(actual.getTitle()).isEqualTo(expected.getTitle());
-        assertThat(actual.getPrice()).isEqualTo(expected.getPrice());
+
     }
 
     @Test

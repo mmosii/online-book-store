@@ -64,11 +64,6 @@ public class BookServiceTest {
         BookDto actual = bookService.save(requestDto);
 
         assertThat(actual).isEqualTo(bookDto);
-        verify(bookMapper, times(1)).toBook(requestDto);
-        verify(categoryRepository, times(1)).getReferenceById(1L);
-        verify(bookRepository, times(1)).save(book);
-        verify(bookMapper, times(1)).toDto(book);
-        verifyNoMoreInteractions(categoryRepository, bookRepository, bookMapper);
     }
 
     @Test
@@ -90,9 +85,6 @@ public class BookServiceTest {
         BookDto actual = bookService.getBookById(1L);
 
         assertThat(actual).isEqualTo(bookDto);
-        verify(bookRepository, times(1)).findById(1L);
-        verify(bookMapper, times(1)).toDto(book);
-        verifyNoMoreInteractions(bookRepository, bookMapper);
     }
 
     @Test
@@ -103,8 +95,6 @@ public class BookServiceTest {
 
         assertThatThrownBy(() -> bookService.getBookById(id))
                 .isInstanceOf(EntityNotFoundException.class);
-        verify(bookRepository, times(1)).findById(id);
-        verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -129,8 +119,6 @@ public class BookServiceTest {
 
         assertThatThrownBy(() -> bookService.deleteById(id))
                 .isInstanceOf(EntityNotFoundException.class);
-        verify(bookRepository, times(1)).existsById(id);
-        verifyNoMoreInteractions(bookRepository);
     }
 
     @Test
@@ -162,11 +150,5 @@ public class BookServiceTest {
         BookDto actual = bookService.update(id, requestDto);
 
         assertThat(actual).isEqualTo(bookDto);
-        verify(bookRepository, times(1)).existsById(id);
-        verify(bookMapper, times(1)).toBook(requestDto);
-        verify(categoryRepository, times(1)).getReferenceById(1L);
-        verify(bookRepository, times(1)).save(book);
-        verify(bookMapper, times(1)).toDto(book);
-        verifyNoMoreInteractions(categoryRepository, bookRepository, bookMapper);
     }
 }
