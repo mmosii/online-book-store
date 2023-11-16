@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.util.Collections;
 import mmosii.bookstore.dto.shoppingcart.CartItemDto;
 import mmosii.bookstore.dto.shoppingcart.CartItemRequestDto;
 import mmosii.bookstore.dto.shoppingcart.CartItemUpdateDto;
@@ -50,7 +51,7 @@ public class ShoppingCartControllerTest {
     @DisplayName("Get shopping cart for valid user")
     @WithMockUser(username = "test@gmail.com", authorities = {"USER", "ADMIN"})
     void getShoppingCart_validUser_returnsDto() throws Exception {
-        ShoppingCartDto expected = new ShoppingCartDto(3L, 5L, null);
+        ShoppingCartDto expected = new ShoppingCartDto(3L, 5L, Collections.emptyList());
 
         MvcResult result = mockMvc.perform(get("/api/cart")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -59,9 +60,9 @@ public class ShoppingCartControllerTest {
 
         ShoppingCartDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), ShoppingCartDto.class);
-        assertThat(actual).isNotNull();
-        assertThat(actual.id()).isEqualTo(expected.id());
-        assertThat(actual.userId()).isEqualTo(expected.userId());
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("id", expected.id())
+                .hasFieldOrPropertyWithValue("userId", expected.userId());
     }
 
     @Test
@@ -71,19 +72,18 @@ public class ShoppingCartControllerTest {
         CartItemRequestDto requestDto = new CartItemRequestDto(2L, 10);
         CartItemDto expected = new CartItemDto(null, 2L, "Shantaram", 10);
 
-        String jsonRequest = objectMapper.writeValueAsString(requestDto);
         MvcResult result = mockMvc.perform(post("/api/cart")
-                        .content(jsonRequest)
+                        .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
         CartItemDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), CartItemDto.class);
-        assertThat(actual).isNotNull();
-        assertThat(actual.bookId()).isEqualTo(expected.bookId());
-        assertThat(actual.bookTitle()).isEqualTo(expected.bookTitle());
-        assertThat(actual.quantity()).isEqualTo(expected.quantity());
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("bookId", expected.bookId())
+                .hasFieldOrPropertyWithValue("bookTitle", expected.bookTitle())
+                .hasFieldOrPropertyWithValue("quantity", expected.quantity());
     }
 
     @Test
@@ -94,19 +94,18 @@ public class ShoppingCartControllerTest {
         CartItemUpdateDto updateDto = new CartItemUpdateDto(20);
         CartItemDto expected = new CartItemDto(6L, 2L, "Shantaram", 20);
 
-        String jsonRequest = objectMapper.writeValueAsString(updateDto);
         MvcResult result = mockMvc.perform(put("/api/cart/cart-items/" + id)
-                        .content(jsonRequest)
+                        .content(objectMapper.writeValueAsString(updateDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
 
         CartItemDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), CartItemDto.class);
-        assertThat(actual).isNotNull();
-        assertThat(actual.bookId()).isEqualTo(expected.bookId());
-        assertThat(actual.bookTitle()).isEqualTo(expected.bookTitle());
-        assertThat(actual.quantity()).isEqualTo(expected.quantity());
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("bookId", expected.bookId())
+                .hasFieldOrPropertyWithValue("bookTitle", expected.bookTitle())
+                .hasFieldOrPropertyWithValue("quantity", expected.quantity());
     }
 
     @Test

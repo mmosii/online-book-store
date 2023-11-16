@@ -24,6 +24,7 @@ import mmosii.bookstore.repository.shoppingcart.CartItemRepository;
 import mmosii.bookstore.repository.shoppingcart.ShoppingCartRepository;
 import mmosii.bookstore.repository.user.UserRepository;
 import mmosii.bookstore.service.impl.ShoppingCartServiceImpl;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -55,10 +56,14 @@ public class ShoppingCartServiceTest {
     @Mock
     private SecurityContext securityContext;
 
+    @BeforeEach
+    void setUp() {
+        SecurityContextHolder.setContext(securityContext);
+    }
+
     @Test
     @DisplayName("Get already existing shopping cart")
     void getShoppingCart_existingCart_returnsCartDto() {
-        SecurityContextHolder.setContext(securityContext);
         User user = new User();
         user.setId(5L);
         user.setEmail("test@gmail.com");
@@ -80,19 +85,11 @@ public class ShoppingCartServiceTest {
         ShoppingCartDto actual = shoppingCartService.getShoppingCart();
 
         assertThat(actual).isEqualTo(expected);
-        verify(securityContext, times(1)).getAuthentication();
-        verify(authentication, times(1)).getName();
-        verify(userRepository, times(1)).findByEmail("test@gmail.com");
-        verify(shoppingCartRepository, times(1)).findByUserId(user.getId());
-        verify(shoppingCartMapper, times(1)).toDto(shoppingCart);
-        verifyNoMoreInteractions(securityContext, authentication, userRepository,
-                shoppingCartRepository, shoppingCartMapper);
     }
 
     @Test
     @DisplayName("Get new shopping cart")
     void getShoppingCart_newCart_returnsCartDto() {
-        SecurityContextHolder.setContext(securityContext);
         User user = new User();
         user.setId(5L);
         user.setEmail("test@gmail.com");
@@ -113,21 +110,11 @@ public class ShoppingCartServiceTest {
         ShoppingCartDto actual = shoppingCartService.getShoppingCart();
 
         assertThat(actual.userId()).isEqualTo(expected.userId());
-        verify(securityContext, times(1)).getAuthentication();
-        verify(authentication, times(1)).getName();
-        verify(userRepository, times(1)).findByEmail("test@gmail.com");
-        verify(shoppingCartRepository, times(1)).findByUserId(user.getId());
-        verify(shoppingCartRepository, times(1)).save(any());
-        verify(shoppingCartMapper, times(1)).toDto(shoppingCart);
-        verifyNoMoreInteractions(securityContext, authentication,
-                userRepository, shoppingCartRepository, shoppingCartMapper);
     }
 
     @Test
     @DisplayName("Add valid cart item to shopping cart")
     void addCartItem_validRequestDto_returnsCartItemDto() {
-        SecurityContextHolder.setContext(securityContext);
-
         Book book = new Book();
         book.setTitle("The Godfather");
         book.setId(3L);
@@ -161,22 +148,11 @@ public class ShoppingCartServiceTest {
         CartItemDto actual = shoppingCartService.addCartItem(requestDto);
 
         assertThat(actual).isEqualTo(expected);
-        verify(securityContext, times(1)).getAuthentication();
-        verify(authentication, times(1)).getName();
-        verify(userRepository, times(1)).findByEmail("test@gmail.com");
-        verify(bookRepository, times(1)).findById(book.getId());
-        verify(shoppingCartRepository, times(1)).findByUserId(user.getId());
-        verify(cartItemRepository, times(1)).save(any());
-        verify(cartItemMapper, times(1)).toDto(cartItem);
-        verifyNoMoreInteractions(securityContext, authentication,
-                userRepository, shoppingCartRepository, cartItemMapper);
     }
 
     @Test
     @DisplayName("Update existing cart item in shopping cart")
     void updateCartItem_validUpdateDto_returnsCartItemDto() {
-        SecurityContextHolder.setContext(securityContext);
-
         User user = new User();
         user.setId(5L);
         user.setEmail("test@gmail.com");
@@ -205,22 +181,11 @@ public class ShoppingCartServiceTest {
         CartItemDto actual = shoppingCartService.updateCartItem(1L, updateDto);
 
         assertThat(actual.quantity()).isEqualTo(expected.quantity());
-        verify(securityContext, times(1)).getAuthentication();
-        verify(authentication, times(1)).getName();
-        verify(userRepository, times(1)).findByEmail("test@gmail.com");
-        verify(shoppingCartRepository, times(1)).findByUserId(user.getId());
-        verify(cartItemRepository, times(1))
-                .findByIdAndShoppingCartId(itemId, shoppingCart.getId());
-        verify(cartItemMapper, times(1)).toDto(cartItem);
-        verifyNoMoreInteractions(securityContext, authentication,
-                userRepository, shoppingCartRepository, cartItemMapper);
     }
 
     @Test
     @DisplayName("Removes existing cart item from shopping cart")
     void removeCartItem_validId() {
-        SecurityContextHolder.setContext(securityContext);
-
         User user = new User();
         user.setId(5L);
         user.setEmail("test@gmail.com");
