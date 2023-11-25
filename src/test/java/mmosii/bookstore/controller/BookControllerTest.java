@@ -26,8 +26,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:database/add-books-and-categories-to-books-table.sql")
-@Sql(scripts = "classpath:database/delete-books-and-categories-from-books-table.sql",
+@Sql(scripts = {"classpath:database/add-categories-input-data.sql",
+        "classpath:database/add-books-input-data.sql",
+        "classpath:database/add-books-categories-input-data.sql"})
+@Sql(scripts = {"classpath:database/delete-books-categories-table.sql",
+        "classpath:database/delete-books-table.sql",
+        "classpath:database/delete-categories-table.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class BookControllerTest {
     protected static MockMvc mockMvc;
@@ -49,10 +53,7 @@ public class BookControllerTest {
     void createBook_validRequestDto_returnsDto() throws Exception {
         CreateBookRequestDto requestDto = new CreateBookRequestDto(
                 "The Godfather", "Mario Puzo", "553322",
-                BigDecimal.valueOf(125.55), null, null, List.of(1L));
-
-        BookDto expected = new BookDto();
-        expected.setTitle(requestDto.title());
+                BigDecimal.valueOf(125.55), "some desc", "some img", List.of(1L));
 
         MvcResult result = mockMvc.perform(post("/api/books")
                         .content(objectMapper.writeValueAsString(requestDto))
@@ -63,7 +64,12 @@ public class BookControllerTest {
         BookDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), BookDto.class);
         assertThat(actual).isNotNull()
-                .hasFieldOrPropertyWithValue("title", expected.getTitle());
+                .hasFieldOrPropertyWithValue("title", requestDto.title())
+                .hasFieldOrPropertyWithValue("author", requestDto.author())
+                .hasFieldOrPropertyWithValue("price", requestDto.price())
+                .hasFieldOrPropertyWithValue("description", requestDto.description())
+                .hasFieldOrPropertyWithValue("coverImage", requestDto.coverImage())
+                .hasFieldOrPropertyWithValue("categoryIds", requestDto.categoryIds());
         assertThat(actual.getId()).isNotNull();
 
     }

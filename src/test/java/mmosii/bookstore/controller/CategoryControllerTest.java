@@ -24,8 +24,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:database/add-books-and-categories-to-books-table.sql")
-@Sql(scripts = "classpath:database/delete-books-and-categories-from-books-table.sql",
+@Sql(scripts = "classpath:database/add-categories-input-data.sql")
+@Sql(scripts = "classpath:database/delete-categories-table.sql",
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class CategoryControllerTest {
     protected static MockMvc mockMvc;
@@ -47,8 +47,6 @@ public class CategoryControllerTest {
     void createCategory_validRequestDto_returnsDto() throws Exception {
         CreateCategoryRequestDto requestDto = new CreateCategoryRequestDto("Comedy", "some desc");
 
-        CategoryDto expected = new CategoryDto(3L, requestDto.name(), requestDto.description());
-
         MvcResult result = mockMvc.perform(post("/api/categories/")
                         .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
@@ -58,8 +56,8 @@ public class CategoryControllerTest {
         CategoryDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), CategoryDto.class);
         assertThat(actual).isNotNull()
-                .hasFieldOrPropertyWithValue("name", expected.name())
-                .hasFieldOrPropertyWithValue("description", expected.description());
+                .hasFieldOrPropertyWithValue("name", requestDto.name())
+                .hasFieldOrPropertyWithValue("description", requestDto.description());
         assertThat(actual.id()).isNotNull();
     }
 

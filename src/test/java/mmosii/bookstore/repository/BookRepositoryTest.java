@@ -14,8 +14,12 @@ import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Sql(scripts = "classpath:database/add-books-and-categories-to-books-table.sql")
-@Sql(scripts = "classpath:database/delete-books-and-categories-from-books-table.sql",
+@Sql(scripts = {"classpath:database/add-categories-input-data.sql",
+        "classpath:database/add-books-input-data.sql",
+        "classpath:database/add-books-categories-input-data.sql"})
+@Sql(scripts = {"classpath:database/delete-books-categories-table.sql",
+        "classpath:database/delete-books-table.sql",
+        "classpath:database/delete-categories-table.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 class BookRepositoryTest {
     @Autowired
