@@ -2,8 +2,6 @@ package mmosii.bookstore.repository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-import java.util.Optional;
-import mmosii.bookstore.model.ShoppingCart;
 import mmosii.bookstore.repository.shoppingcart.ShoppingCartRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,7 +11,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase
 @Sql(scripts = {"classpath:database/add-shopping-cart-and-user.sql",
         "classpath:database/add-books-and-categories-to-books-table.sql"})
 @Sql(scripts = {"classpath:database/delete-shoppingcarts-and-user.sql",
@@ -26,14 +24,14 @@ public class ShoppingCartRepositoryTest {
     @Test
     @DisplayName("Find shopping cart by valid user id")
     void findByUserId_validId_returnsShoppingCart() {
-        ShoppingCart actual = shoppingCartRepository.findByUserId(5L).get();
-        assertThat(actual.getId()).isEqualTo(3L);
+        assertThat(shoppingCartRepository.findByUserId(5L))
+                .get()
+                .hasFieldOrPropertyWithValue("id", 3L);
     }
 
     @Test
     @DisplayName("Find shopping cart by non existing user id")
     void findByUserId_notValidId_returnsOptionalEmpty() {
-        Optional<ShoppingCart> actual = shoppingCartRepository.findByUserId(50L);
-        assertThat(actual).isEqualTo(Optional.empty());
+        assertThat(shoppingCartRepository.findByUserId(50L)).isEmpty();
     }
 }

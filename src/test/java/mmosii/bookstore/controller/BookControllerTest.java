@@ -30,7 +30,7 @@ import org.springframework.web.context.WebApplicationContext;
 @Sql(scripts = "classpath:database/delete-books-and-categories-from-books-table.sql",
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class BookControllerTest {
-    protected static MockMvc mockMvc;
+    private static MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -79,8 +79,7 @@ public class BookControllerTest {
         expected.setTitle("The Godfather");
         expected.setPrice(BigDecimal.valueOf(350.55));
 
-        MvcResult result = mockMvc.perform(get("/api/books/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/api/books/" + id))
                 .andExpect(status().isOk())
                 .andReturn();
 

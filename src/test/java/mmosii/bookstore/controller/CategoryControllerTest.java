@@ -28,7 +28,7 @@ import org.springframework.web.context.WebApplicationContext;
 @Sql(scripts = "classpath:database/delete-books-and-categories-from-books-table.sql",
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class CategoryControllerTest {
-    protected static MockMvc mockMvc;
+    private static MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -73,8 +73,7 @@ public class CategoryControllerTest {
 
         CategoryDto expected = new CategoryDto(1L, "fantasy", null);
 
-        MvcResult result = mockMvc.perform(get("/api/categories/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/api/categories/" + id))
                 .andExpect(status().isOk())
                 .andReturn();
 

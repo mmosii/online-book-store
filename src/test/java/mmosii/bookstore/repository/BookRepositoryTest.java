@@ -13,7 +13,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.jdbc.Sql;
 
 @DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@AutoConfigureTestDatabase
 @Sql(scripts = "classpath:database/add-books-and-categories-to-books-table.sql")
 @Sql(scripts = "classpath:database/delete-books-and-categories-from-books-table.sql",
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)

@@ -9,11 +9,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Collections;
 import mmosii.bookstore.dto.shoppingcart.CartItemDto;
 import mmosii.bookstore.dto.shoppingcart.CartItemRequestDto;
 import mmosii.bookstore.dto.shoppingcart.CartItemUpdateDto;
 import mmosii.bookstore.dto.shoppingcart.ShoppingCartDto;
+import mmosii.bookstore.repository.book.BookRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -34,7 +34,9 @@ import org.springframework.web.context.WebApplicationContext;
         "classpath:database/delete-books-and-categories-from-books-table.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class ShoppingCartControllerTest {
-    protected static MockMvc mockMvc;
+    private static MockMvc mockMvc;
+    @Autowired
+    private BookRepository bookRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -51,18 +53,16 @@ public class ShoppingCartControllerTest {
     @DisplayName("Get shopping cart for valid user")
     @WithMockUser(username = "test@gmail.com", authorities = {"USER", "ADMIN"})
     void getShoppingCart_validUser_returnsDto() throws Exception {
-        ShoppingCartDto expected = new ShoppingCartDto(3L, 5L, Collections.emptyList());
-
-        MvcResult result = mockMvc.perform(get("/api/cart")
-                        .contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/api/cart"))
                 .andExpect(status().isOk())
                 .andReturn();
 
         ShoppingCartDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), ShoppingCartDto.class);
         assertThat(actual).isNotNull()
-                .hasFieldOrPropertyWithValue("id", expected.id())
-                .hasFieldOrPropertyWithValue("userId", expected.userId());
+                .hasFieldOrPropertyWithValue("id", 3L)
+                .hasFieldOrPropertyWithValue("userId", 5L)
+                .hasFieldOrProperty("cartItems").isNotNull();
     }
 
     @Test
@@ -118,5 +118,7 @@ public class ShoppingCartControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent())
                 .andReturn();
+
+        assertThat(bookRepository.findById(id)).isEmpty();
     }
 }

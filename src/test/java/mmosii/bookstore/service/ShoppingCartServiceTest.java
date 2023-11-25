@@ -8,6 +8,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.Collections;
 import java.util.Optional;
 import mmosii.bookstore.dto.shoppingcart.CartItemDto;
 import mmosii.bookstore.dto.shoppingcart.CartItemRequestDto;
@@ -15,6 +16,8 @@ import mmosii.bookstore.dto.shoppingcart.CartItemUpdateDto;
 import mmosii.bookstore.dto.shoppingcart.ShoppingCartDto;
 import mmosii.bookstore.mapper.CartItemMapper;
 import mmosii.bookstore.mapper.ShoppingCartMapper;
+import mmosii.bookstore.mapper.impl.CartItemMapperImpl;
+import mmosii.bookstore.mapper.impl.ShoppingCartMapperImpl;
 import mmosii.bookstore.model.Book;
 import mmosii.bookstore.model.CartItem;
 import mmosii.bookstore.model.ShoppingCart;
@@ -30,6 +33,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
@@ -39,12 +43,12 @@ import org.springframework.security.core.context.SecurityContextHolder;
 public class ShoppingCartServiceTest {
     @Mock
     private ShoppingCartRepository shoppingCartRepository;
-    @Mock
-    private ShoppingCartMapper shoppingCartMapper;
+    @Spy
+    private ShoppingCartMapper shoppingCartMapper = new ShoppingCartMapperImpl();
     @Mock
     private UserRepository userRepository;
-    @Mock
-    private CartItemMapper cartItemMapper;
+    @Spy
+    private CartItemMapper cartItemMapper = new CartItemMapperImpl();
     @Mock
     private CartItemRepository cartItemRepository;
     @Mock
@@ -73,14 +77,13 @@ public class ShoppingCartServiceTest {
         shoppingCart.setId(3L);
 
         ShoppingCartDto expected = new ShoppingCartDto(shoppingCart.getId(),
-                shoppingCart.getUser().getId(), null);
+                shoppingCart.getUser().getId(), Collections.emptyList());
 
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(authentication.getName()).thenReturn("test@gmail.com");
         when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.of(user));
         when(shoppingCartRepository.findByUserId(user.getId()))
                 .thenReturn(Optional.of(shoppingCart));
-        when(shoppingCartMapper.toDto(shoppingCart)).thenReturn(expected);
 
         ShoppingCartDto actual = shoppingCartService.getShoppingCart();
 
@@ -105,7 +108,6 @@ public class ShoppingCartServiceTest {
         when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.of(user));
         when(shoppingCartRepository.findByUserId(user.getId())).thenReturn(Optional.empty());
         when(shoppingCartRepository.save(any())).thenReturn(shoppingCart);
-        when(shoppingCartMapper.toDto(shoppingCart)).thenReturn(expected);
 
         ShoppingCartDto actual = shoppingCartService.getShoppingCart();
 
@@ -133,9 +135,6 @@ public class ShoppingCartServiceTest {
         cartItem.setQuantity(requestDto.quantity());
         cartItem.setShoppingCart(shoppingCart);
 
-        CartItemDto expected = new CartItemDto(1L, book.getId(),
-                book.getTitle(), requestDto.quantity());
-
         when(securityContext.getAuthentication()).thenReturn(authentication);
         when(authentication.getName()).thenReturn("test@gmail.com");
         when(userRepository.findByEmail("test@gmail.com")).thenReturn(Optional.of(user));
@@ -143,11 +142,12 @@ public class ShoppingCartServiceTest {
         when(shoppingCartRepository.findByUserId(user.getId()))
                 .thenReturn(Optional.of(shoppingCart));
         when(cartItemRepository.save(any())).thenReturn(cartItem);
-        when(cartItemMapper.toDto(cartItem)).thenReturn(expected);
 
         CartItemDto actual = shoppingCartService.addCartItem(requestDto);
 
-        assertThat(actual).isEqualTo(expected);
+        assertThat(actual).hasFieldOrPropertyWithValue("bookId", requestDto.bookId())
+                .hasFieldOrPropertyWithValue("bookTitle", book.getTitle())
+                .hasFieldOrPropertyWithValue("quantity", requestDto.quantity());
     }
 
     @Test
@@ -176,7 +176,6 @@ public class ShoppingCartServiceTest {
                 .thenReturn(Optional.of(shoppingCart));
         when(cartItemRepository.findByIdAndShoppingCartId(itemId,
                 shoppingCart.getId())).thenReturn(Optional.of(cartItem));
-        when(cartItemMapper.toDto(cartItem)).thenReturn(expected);
 
         CartItemDto actual = shoppingCartService.updateCartItem(1L, updateDto);
 
