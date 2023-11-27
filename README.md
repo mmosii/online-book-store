@@ -8,70 +8,48 @@ Step into our online bookstore, a sanctuary born from a *love for literature* an
 
 Join us on a digital journey where *pages transform into portals*, inviting you to **explore, imagine, and discover** the timeless magic held within the covers of each book.
 
-<!-- Table of Contents -->
-**Table of Contents**
-- [Project Technologies](#project-technologies)
-- [Class Diagram](#class-diagram)
-- [Endpoints](#endpoints)
-   - [Endpoints for Registration and Authentication for Users](#endpoints-for-registration-and-authentication-for-users)
-   - [Endpoints for Managing Book Categories](#endpoints-for-managing-book-categories)
-   - [Endpoints for Managing Books](#endpoints-for-managing-books)
-   - [Endpoints for Managing User's Shopping Carts](#endpoints-for-managing-users-shopping-carts)
-   - [Endpoints for Managing User's Orders](#endpoints-for-managing-users-orders)
-- [Demonstration](#demonstration)
-- [Quick Start](#quick-start)
-- [Using Postman Requests Collection](#using-postman-requests-collection)
-- [Test with Swagger on AWS](#test-with-swagger-on-aws)
 
 ## Project Technologies
 
 <div align="center">
 
-<div style="display: inline-block; text-align: left; width: 30%; margin: 0 1.5%;">
+<div style="display: inline-block; text-align: left; width: 22%; margin: 0 1.5%;">
 
-### Java
-[<img src="https://www.oracle.com/a/tech/img/cb88-java-logo-001.jpg" height="50" alt="Java Logo">](https://www.oracle.com/java/)
 
-### Spring Boot
-[<img src="https://pbs.twimg.com/profile_images/1235868806079057921/fTL08u_H_400x400.png" height="50" alt="Spring Boot Logo">](https://spring.io/projects/spring-boot)
+#### Java [<img src="https://www.oracle.com/a/tech/img/cb88-java-logo-001.jpg" height="20" alt="Java Logo">](https://www.oracle.com/java/)
 
-### Spring Security
-[<img src="https://pbs.twimg.com/profile_images/1235983944463585281/AWCKLiJh_400x400.png" height="50" alt="Spring Security Logo">](https://spring.io/projects/spring-security)
 
-### Spring Data JPA
-[<img src="https://pbs.twimg.com/profile_images/1235945452304031744/w55Uc_O9_400x400.png" height="50" alt="Spring Data JPA Logo">](https://spring.io/projects/spring-data-jpa)
+#### Spring Boot [<img src="https://pbs.twimg.com/profile_images/1235868806079057921/fTL08u_H_400x400.png" height="20" alt="Spring Boot Logo">](https://spring.io/projects/spring-boot)
 
-</div>
 
-<div style="display: inline-block; text-align: left; width: 30%; margin: 0 1.5%;">
+#### Spring Security [<img src="https://pbs.twimg.com/profile_images/1235983944463585281/AWCKLiJh_400x400.png" height="20" alt="Spring Security Logo">](https://spring.io/projects/spring-security)
 
-### Swagger
-[<img src="https://seeklogo.com/images/S/swagger-logo-A49F73BAF4-seeklogo.com.png" height="50" alt="Swagger Logo">](https://swagger.io/)
 
-### MySQL
-[<img src="https://www.mysql.com/common/logos/logo-mysql-170x115.png" height="50" alt="MySQL Logo">](https://www.mysql.com/)
-
-### Docker
-[<img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/97_Docker_logo_logos-512.png" height="50" alt="Docker Logo">](https://www.docker.com/)
-
-### Lombok
-[<img src="https://blog.kakaocdn.net/dn/bA0QdM/btqQCzxS7vv/RTB3bbZsu7EMKPBefuTn80/img.jpg" height="50" alt="Lombok Logo">](https://projectlombok.org/)
+#### Spring Data JPA [<img src="https://pbs.twimg.com/profile_images/1235945452304031744/w55Uc_O9_400x400.png" height="20" alt="Spring Data JPA Logo">](https://spring.io/projects/spring-data-jpa)
 
 </div>
 
-<div style="display: inline-block; text-align: left; width: 30%; margin: 0 1.5%;">
+<div style="display: inline-block; text-align: left; width: 22%; margin: 0 1.5%;">
 
-### MapStruct
-[<img src="https://mapstruct.github.io/mapstruct.org.new/images/favicon.ico" height="50" alt="MapStruct Logo">](https://www.mapstruct.org/)
+#### Lombok [<img src="https://blog.kakaocdn.net/dn/bA0QdM/btqQCzxS7vv/RTB3bbZsu7EMKPBefuTn80/img.jpg" height="20" alt="Lombok Logo">](https://projectlombok.org/)
 
-### Liquibase
-[<img src="https://dashboard.snapcraft.io/site_media/appmedia/2020/08/liquibase.jpeg.png" height="50" alt="Liquibase Logo">](https://www.liquibase.org/)
+#### MapStruct [<img src="https://mapstruct.github.io/mapstruct.org.new/images/favicon.ico" height="20" alt="MapStruct Logo">](https://www.mapstruct.org/)
 
-### Maven
-[<img src="https://maven.apache.org/images/maven-logo-black-on-white.png" height="50" alt="Maven Logo">](https://maven.apache.org/)
+#### Liquibase [<img src="https://dashboard.snapcraft.io/site_media/appmedia/2020/08/liquibase.jpeg.png" height="20" alt="Liquibase Logo">](https://www.liquibase.org/)
 
-### AWS
-[<img src="https://logowik.com/content/uploads/images/aws-amazon-web-services.jpg" height="50" alt="AWS Logo">](https://aws.amazon.com/)
+#### MySQL [<img src="https://www.mysql.com/common/logos/logo-mysql-170x115.png" height="20" alt="MySQL Logo">](https://www.mysql.com/)
+
+</div>
+
+<div style="display: inline-block; text-align: left; width: 22%; margin: 0 1.5%;">
+
+#### Maven [<img src="https://maven.apache.org/images/maven-logo-black-on-white.png" height="20" alt="Maven Logo">](https://maven.apache.org/)
+
+#### Swagger [<img src="https://seeklogo.com/images/S/swagger-logo-A49F73BAF4-seeklogo.com.png" height="20" alt="Swagger Logo">](https://swagger.io/)
+
+#### Docker [<img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/97_Docker_logo_logos-512.png" height="20" alt="Docker Logo">](https://www.docker.com/)
+
+#### AWS [<img src="https://logowik.com/content/uploads/images/aws-amazon-web-services.jpg" height="20" alt="AWS Logo">](https://aws.amazon.com/)
 
 </div>
 
@@ -141,10 +119,7 @@ For a demonstration of the application, you can watch the following Loom video:
 1. **Install Docker:**
    [Install Docker](https://docs.docker.com/get-docker/)
 
-2. **Clone this repository:**
-   ```bash
-   git clone https://github.com/mmosii/online-book-store.git
-   cd online-book-store
+2. **Clone this repository.**
 
 3. **Create a .env file in the root of the project.
 Use .env.sample as a reference.
