@@ -7,6 +7,22 @@
 Step into our online bookstore, a sanctuary born from a *love for literature* and a commitment to redefine the reading experience. Fueled by the desire to blend the traditional bookstores with modern convenience, our project addresses the need for an accessible store where the joy of discovering new worlds aligns with the pace of contemporary life.
 
 Join us on a digital journey where *pages transform into portals*, inviting you to **explore, imagine, and discover** the timeless magic held within the covers of each book.
+
+<!-- Table of Contents -->
+**Table of Contents**
+- [Project Technologies](#project-technologies)
+- [Class Diagram](#class-diagram)
+- [Endpoints](#endpoints)
+   - [Endpoints for Registration and Authentication for Users](#endpoints-for-registration-and-authentication-for-users)
+   - [Endpoints for Managing Book Categories](#endpoints-for-managing-book-categories)
+   - [Endpoints for Managing Books](#endpoints-for-managing-books)
+   - [Endpoints for Managing User's Shopping Carts](#endpoints-for-managing-users-shopping-carts)
+   - [Endpoints for Managing User's Orders](#endpoints-for-managing-users-orders)
+- [Demonstration](#demonstration)
+- [Quick Start](#quick-start)
+- [Using Postman Requests Collection](#using-postman-requests-collection)
+- [Test with Swagger on AWS](#test-with-swagger-on-aws)
+
 ## Project Technologies
 
 <div align="center">
