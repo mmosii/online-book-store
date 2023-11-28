@@ -16,38 +16,38 @@ Join us on a digital journey where *pages transform into portals*, inviting you 
 <div style="display: inline-block; text-align: left; width: 22%; margin: 0 1.5%;">
 
 
-#### Java [<img src="https://www.oracle.com/a/tech/img/cb88-java-logo-001.jpg" height="20" alt="Java Logo">](https://www.oracle.com/java/)
+#### Java 17 [<img src="https://www.oracle.com/a/tech/img/cb88-java-logo-001.jpg" height="20" alt="Java Logo">](https://www.oracle.com/java/)
 
 
-#### Spring Boot [<img src="https://pbs.twimg.com/profile_images/1235868806079057921/fTL08u_H_400x400.png" height="20" alt="Spring Boot Logo">](https://spring.io/projects/spring-boot)
+#### Spring Boot 3.1.4 [<img src="https://pbs.twimg.com/profile_images/1235868806079057921/fTL08u_H_400x400.png" height="20" alt="Spring Boot Logo">](https://spring.io/projects/spring-boot)
 
 
-#### Spring Security [<img src="https://pbs.twimg.com/profile_images/1235983944463585281/AWCKLiJh_400x400.png" height="20" alt="Spring Security Logo">](https://spring.io/projects/spring-security)
+#### Spring Security 6.1.4 [<img src="https://pbs.twimg.com/profile_images/1235983944463585281/AWCKLiJh_400x400.png" height="20" alt="Spring Security Logo">](https://spring.io/projects/spring-security)
 
 
-#### Spring Data JPA [<img src="https://pbs.twimg.com/profile_images/1235945452304031744/w55Uc_O9_400x400.png" height="20" alt="Spring Data JPA Logo">](https://spring.io/projects/spring-data-jpa)
-
-</div>
-
-<div style="display: inline-block; text-align: left; width: 22%; margin: 0 1.5%;">
-
-#### Lombok [<img src="https://blog.kakaocdn.net/dn/bA0QdM/btqQCzxS7vv/RTB3bbZsu7EMKPBefuTn80/img.jpg" height="20" alt="Lombok Logo">](https://projectlombok.org/)
-
-#### MapStruct [<img src="https://mapstruct.github.io/mapstruct.org.new/images/favicon.ico" height="20" alt="MapStruct Logo">](https://www.mapstruct.org/)
-
-#### Liquibase [<img src="https://dashboard.snapcraft.io/site_media/appmedia/2020/08/liquibase.jpeg.png" height="20" alt="Liquibase Logo">](https://www.liquibase.org/)
-
-#### MySQL [<img src="https://www.mysql.com/common/logos/logo-mysql-170x115.png" height="20" alt="MySQL Logo">](https://www.mysql.com/)
+#### Spring Data JPA 3.1.4 [<img src="https://pbs.twimg.com/profile_images/1235945452304031744/w55Uc_O9_400x400.png" height="20" alt="Spring Data JPA Logo">](https://spring.io/projects/spring-data-jpa)
 
 </div>
 
 <div style="display: inline-block; text-align: left; width: 22%; margin: 0 1.5%;">
 
-#### Maven [<img src="https://maven.apache.org/images/maven-logo-black-on-white.png" height="20" alt="Maven Logo">](https://maven.apache.org/)
+#### Lombok 1.18.3 [<img src="https://blog.kakaocdn.net/dn/bA0QdM/btqQCzxS7vv/RTB3bbZsu7EMKPBefuTn80/img.jpg" height="20" alt="Lombok Logo">](https://projectlombok.org/)
 
-#### Swagger [<img src="https://seeklogo.com/images/S/swagger-logo-A49F73BAF4-seeklogo.com.png" height="20" alt="Swagger Logo">](https://swagger.io/)
+#### MapStruct 1.5.5 [<img src="https://mapstruct.github.io/mapstruct.org.new/images/favicon.ico" height="20" alt="MapStruct Logo">](https://www.mapstruct.org/)
 
-#### Docker [<img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/97_Docker_logo_logos-512.png" height="20" alt="Docker Logo">](https://www.docker.com/)
+#### Liquibase 4.2.0 [<img src="https://dashboard.snapcraft.io/site_media/appmedia/2020/08/liquibase.jpeg.png" height="20" alt="Liquibase Logo">](https://www.liquibase.org/)
+
+#### MySQL 8.0.33 [<img src="https://www.mysql.com/common/logos/logo-mysql-170x115.png" height="20" alt="MySQL Logo">](https://www.mysql.com/)
+
+</div>
+
+<div style="display: inline-block; text-align: left; width: 22%; margin: 0 1.5%;">
+
+#### Maven 3.11.0 [<img src="https://maven.apache.org/images/maven-logo-black-on-white.png" height="20" alt="Maven Logo">](https://maven.apache.org/)
+
+#### Swagger 2.1.0 [<img src="https://seeklogo.com/images/S/swagger-logo-A49F73BAF4-seeklogo.com.png" height="20" alt="Swagger Logo">](https://swagger.io/)
+
+#### Docker 3.8 [<img src="https://cdn4.iconfinder.com/data/icons/logos-and-brands/512/97_Docker_logo_logos-512.png" height="20" alt="Docker Logo">](https://www.docker.com/)
 
 #### AWS [<img src="https://logowik.com/content/uploads/images/aws-amazon-web-services.jpg" height="20" alt="AWS Logo">](https://aws.amazon.com/)
 
