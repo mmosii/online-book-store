@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import mmosii.bookstore.dto.book.BookDto;
 import mmosii.bookstore.dto.book.CreateBookRequestDto;
+import mmosii.bookstore.repository.book.BookRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -26,14 +27,20 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:database/add-books-and-categories-to-books-table.sql")
-@Sql(scripts = "classpath:database/delete-books-and-categories-from-books-table.sql",
+@Sql(scripts = {"classpath:database/add-categories-input-data.sql",
+        "classpath:database/add-books-input-data.sql",
+        "classpath:database/add-books-categories-input-data.sql"})
+@Sql(scripts = {"classpath:database/delete-books-categories-table.sql",
+        "classpath:database/delete-books-table.sql",
+        "classpath:database/delete-categories-table.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class BookControllerTest {
     private static MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private BookRepository bookRepository;
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -49,24 +56,24 @@ public class BookControllerTest {
     void createBook_validRequestDto_returnsDto() throws Exception {
         CreateBookRequestDto requestDto = new CreateBookRequestDto(
                 "The Godfather", "Mario Puzo", "553322",
-                BigDecimal.valueOf(125.55), null, null, List.of(1L));
-
-        BookDto expected = new BookDto();
-        expected.setTitle(requestDto.title());
-
-        String jsonRequest = objectMapper.writeValueAsString(requestDto);
+                BigDecimal.valueOf(125.55), "some desc", "some img", List.of(1L));
 
         MvcResult result = mockMvc.perform(post("/api/books")
-                        .content(jsonRequest)
+                        .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         BookDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), BookDto.class);
-        assertThat(actual).isNotNull();
-        assertThat(actual.getId()).isNotNull();
-        assertThat(actual.getTitle()).isEqualTo(expected.getTitle());
+        assertThat(actual)
+                .hasFieldOrPropertyWithValue("title", requestDto.title())
+                .hasFieldOrPropertyWithValue("author", requestDto.author())
+                .hasFieldOrPropertyWithValue("price", requestDto.price())
+                .hasFieldOrPropertyWithValue("description", requestDto.description())
+                .hasFieldOrPropertyWithValue("coverImage", requestDto.coverImage())
+                .hasFieldOrPropertyWithValue("categoryIds", requestDto.categoryIds())
+                .hasFieldOrPropertyWithValue("id", 3L);
     }
 
     @Test
@@ -85,10 +92,10 @@ public class BookControllerTest {
 
         BookDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), BookDto.class);
-        assertThat(actual).isNotNull();
-        assertThat(actual.getId()).isNotNull();
-        assertThat(actual.getTitle()).isEqualTo(expected.getTitle());
-        assertThat(actual.getPrice()).isEqualTo(expected.getPrice());
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("title", expected.getTitle())
+                .hasFieldOrPropertyWithValue("price", expected.getPrice())
+                .hasFieldOrPropertyWithValue("id", id);
     }
 
     @Test
@@ -97,9 +104,10 @@ public class BookControllerTest {
     void deleteBookById_validId() throws Exception {
         Long id = 1L;
 
-        mockMvc.perform(delete("/api/books/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete("/api/books/" + id))
                 .andExpect(status().isNoContent())
                 .andReturn();
+
+        assertThat(bookRepository.findById(id)).isEmpty();
     }
 }
