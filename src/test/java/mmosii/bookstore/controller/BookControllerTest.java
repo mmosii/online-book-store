@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import mmosii.bookstore.dto.book.BookDto;
 import mmosii.bookstore.dto.book.CreateBookRequestDto;
+import mmosii.bookstore.repository.book.BookRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -38,6 +39,8 @@ public class BookControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private BookRepository bookRepository;
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -63,15 +66,14 @@ public class BookControllerTest {
 
         BookDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), BookDto.class);
-        assertThat(actual).isNotNull()
+        assertThat(actual)
                 .hasFieldOrPropertyWithValue("title", requestDto.title())
                 .hasFieldOrPropertyWithValue("author", requestDto.author())
                 .hasFieldOrPropertyWithValue("price", requestDto.price())
                 .hasFieldOrPropertyWithValue("description", requestDto.description())
                 .hasFieldOrPropertyWithValue("coverImage", requestDto.coverImage())
-                .hasFieldOrPropertyWithValue("categoryIds", requestDto.categoryIds());
-        assertThat(actual.getId()).isNotNull();
-
+                .hasFieldOrPropertyWithValue("categoryIds", requestDto.categoryIds())
+                .hasFieldOrPropertyWithValue("id", 3L);
     }
 
     @Test
@@ -84,8 +86,7 @@ public class BookControllerTest {
         expected.setTitle("The Godfather");
         expected.setPrice(BigDecimal.valueOf(350.55));
 
-        MvcResult result = mockMvc.perform(get("/api/books/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/api/books/" + id))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -93,9 +94,8 @@ public class BookControllerTest {
                 .getContentAsString(), BookDto.class);
         assertThat(actual).isNotNull()
                 .hasFieldOrPropertyWithValue("title", expected.getTitle())
-                .hasFieldOrPropertyWithValue("price", expected.getPrice());
-        assertThat(actual.getId()).isNotNull();
-
+                .hasFieldOrPropertyWithValue("price", expected.getPrice())
+                .hasFieldOrPropertyWithValue("id", id);
     }
 
     @Test
@@ -104,9 +104,10 @@ public class BookControllerTest {
     void deleteBookById_validId() throws Exception {
         Long id = 1L;
 
-        mockMvc.perform(delete("/api/books/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete("/api/books/" + id))
                 .andExpect(status().isNoContent())
                 .andReturn();
+
+        assertThat(bookRepository.findById(id)).isEmpty();
     }
 }

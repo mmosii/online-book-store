@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mmosii.bookstore.dto.category.CategoryDto;
 import mmosii.bookstore.dto.category.CreateCategoryRequestDto;
+import mmosii.bookstore.repository.book.CategoryRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,6 +33,8 @@ public class CategoryControllerTest {
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -57,8 +60,8 @@ public class CategoryControllerTest {
                 .getContentAsString(), CategoryDto.class);
         assertThat(actual).isNotNull()
                 .hasFieldOrPropertyWithValue("name", requestDto.name())
-                .hasFieldOrPropertyWithValue("description", requestDto.description());
-        assertThat(actual.id()).isNotNull();
+                .hasFieldOrPropertyWithValue("description", requestDto.description())
+                .hasFieldOrPropertyWithValue("id", 3L);
     }
 
     @Test
@@ -69,8 +72,7 @@ public class CategoryControllerTest {
 
         CategoryDto expected = new CategoryDto(1L, "fantasy", null);
 
-        MvcResult result = mockMvc.perform(get("/api/categories/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        MvcResult result = mockMvc.perform(get("/api/categories/" + id))
                 .andExpect(status().isOk())
                 .andReturn();
 
@@ -87,9 +89,10 @@ public class CategoryControllerTest {
     void deleteCategoryById_validId() throws Exception {
         Long id = 1L;
 
-        mockMvc.perform(delete("/api/categories/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete("/api/categories/" + id))
                 .andExpect(status().isNoContent())
                 .andReturn();
+
+        assertThat(categoryRepository.findById(id)).isEmpty();
     }
 }
