@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import mmosii.bookstore.dto.category.CategoryDto;
 import mmosii.bookstore.dto.category.CreateCategoryRequestDto;
+import mmosii.bookstore.repository.book.CategoryRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,14 +25,16 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:database/add-books-and-categories-to-books-table.sql")
-@Sql(scripts = "classpath:database/delete-books-and-categories-from-books-table.sql",
+@Sql(scripts = "classpath:database/category/add-categories-input-data.sql")
+@Sql(scripts = "classpath:database/category/delete-categories-table.sql",
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class CategoryControllerTest {
     private static MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
     @BeforeAll
     static void beforeAll(@Autowired WebApplicationContext applicationContext) {
@@ -47,22 +50,18 @@ public class CategoryControllerTest {
     void createCategory_validRequestDto_returnsDto() throws Exception {
         CreateCategoryRequestDto requestDto = new CreateCategoryRequestDto("Comedy", "some desc");
 
-        CategoryDto expected = new CategoryDto(3L, requestDto.name(), requestDto.description());
-
-        String jsonRequest = objectMapper.writeValueAsString(requestDto);
-
         MvcResult result = mockMvc.perform(post("/api/categories/")
-                        .content(jsonRequest)
+                        .content(objectMapper.writeValueAsString(requestDto))
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andReturn();
 
         CategoryDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), CategoryDto.class);
-        assertThat(actual).isNotNull();
-        assertThat(actual.id()).isNotNull();
-        assertThat(actual.name()).isEqualTo(expected.name());
-        assertThat(actual.description()).isEqualTo(expected.description());
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("name", requestDto.name())
+                .hasFieldOrPropertyWithValue("description", requestDto.description())
+                .hasFieldOrPropertyWithValue("id", 3L);
     }
 
     @Test
@@ -79,9 +78,9 @@ public class CategoryControllerTest {
 
         CategoryDto actual = objectMapper.readValue(result.getResponse()
                 .getContentAsString(), CategoryDto.class);
-        assertThat(actual).isNotNull();
-        assertThat(actual.id()).isEqualTo(expected.id());
-        assertThat(actual.name()).isEqualTo(expected.name());
+        assertThat(actual).isNotNull()
+                .hasFieldOrPropertyWithValue("id", expected.id())
+                .hasFieldOrPropertyWithValue("name", expected.name());
     }
 
     @Test
@@ -90,9 +89,10 @@ public class CategoryControllerTest {
     void deleteCategoryById_validId() throws Exception {
         Long id = 1L;
 
-        mockMvc.perform(delete("/api/categories/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete("/api/categories/" + id))
                 .andExpect(status().isNoContent())
                 .andReturn();
+
+        assertThat(categoryRepository.findById(id)).isEmpty();
     }
 }

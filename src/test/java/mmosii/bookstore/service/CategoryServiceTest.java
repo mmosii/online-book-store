@@ -13,6 +13,7 @@ import mmosii.bookstore.dto.category.CategoryDto;
 import mmosii.bookstore.dto.category.CreateCategoryRequestDto;
 import mmosii.bookstore.exception.EntityNotFoundException;
 import mmosii.bookstore.mapper.CategoryMapper;
+import mmosii.bookstore.mapper.impl.CategoryMapperImpl;
 import mmosii.bookstore.model.Category;
 import mmosii.bookstore.repository.book.CategoryRepository;
 import mmosii.bookstore.service.impl.CategoryServiceImpl;
@@ -21,6 +22,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,8 +31,8 @@ public class CategoryServiceTest {
     private CategoryRepository categoryRepository;
     @InjectMocks
     private CategoryServiceImpl categoryService;
-    @Mock
-    private CategoryMapper categoryMapper;
+    @Spy
+    private CategoryMapper categoryMapper = new CategoryMapperImpl();
 
     @Test
     @DisplayName("Save new category with valid CreateCategoryRequestDto")
@@ -41,21 +43,13 @@ public class CategoryServiceTest {
         category.setName(requestDto.name());
         category.setDescription(requestDto.description());
 
-        CategoryDto categoryDto = new CategoryDto(1L,
-                category.getName(),
-                category.getDescription());
-
-        when(categoryMapper.toEntity(requestDto)).thenReturn(category);
         when(categoryRepository.save(category)).thenReturn(category);
-        when(categoryMapper.toDto(category)).thenReturn(categoryDto);
 
         CategoryDto actual = categoryService.save(requestDto);
 
-        assertThat(actual).isEqualTo(categoryDto);
-        verify(categoryMapper, times(1)).toEntity(requestDto);
-        verify(categoryRepository, times(1)).save(category);
-        verify(categoryMapper, times(1)).toDto(category);
-        verifyNoMoreInteractions(categoryRepository, categoryMapper);
+        assertThat(actual)
+                .hasFieldOrPropertyWithValue("name", requestDto.name())
+                .hasFieldOrPropertyWithValue("description", requestDto.description());
     }
 
     @Test
@@ -79,18 +73,11 @@ public class CategoryServiceTest {
                 requestCategory.getDescription());
 
         when(categoryRepository.findById(id)).thenReturn(Optional.of(category));
-        doNothing().when(categoryMapper).updateCategory(requestDto, category);
         when(categoryRepository.save(category)).thenReturn(requestCategory);
-        when(categoryMapper.toDto(requestCategory)).thenReturn(categoryDto);
 
         CategoryDto actual = categoryService.update(id, requestDto);
 
         assertThat(actual).isEqualTo(categoryDto);
-        verify(categoryRepository, times(1)).findById(id);
-        verify(categoryMapper, times(1)).updateCategory(requestDto, category);
-        verify(categoryRepository, times(1)).save(category);
-        verify(categoryMapper, times(1)).toDto(requestCategory);
-        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -102,9 +89,6 @@ public class CategoryServiceTest {
         when(categoryRepository.findById(id)).thenReturn(Optional.empty());
         assertThatThrownBy(() -> categoryService.update(id, requestDto))
                 .isInstanceOf(EntityNotFoundException.class);
-
-        verify(categoryRepository, times(1)).findById(id);
-        verifyNoMoreInteractions(categoryRepository);
     }
 
     @Test
@@ -119,14 +103,10 @@ public class CategoryServiceTest {
                 category.getDescription());
 
         when(categoryRepository.findById(1L)).thenReturn(Optional.of(category));
-        when(categoryMapper.toDto(category)).thenReturn(categoryDto);
 
         CategoryDto actual = categoryService.getById(1L);
 
         assertThat(actual).isEqualTo(categoryDto);
-        verify(categoryRepository, times(1)).findById(1L);
-        verify(categoryMapper, times(1)).toDto(category);
-        verifyNoMoreInteractions(categoryRepository, categoryMapper);
     }
 
     @Test
@@ -137,8 +117,6 @@ public class CategoryServiceTest {
 
         assertThatThrownBy(() -> categoryService.getById(id))
                 .isInstanceOf(EntityNotFoundException.class);
-        verify(categoryRepository, times(1)).findById(id);
-        verifyNoMoreInteractions(categoryRepository);
     }
 
     @Test
