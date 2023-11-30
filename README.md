@@ -132,6 +132,7 @@ Add necessary environment variables.**
    docker-compose build && docker-compose up
    
   The application should be running locally at http://localhost:8082.
+  
 6. **Test with Swagger:
   Open http://localhost:8082/swagger-ui/index.html in your browser.**
 ## Using Postman Requests Collection
