@@ -25,11 +25,11 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = "classpath:database/add-categories-input-data.sql")
-@Sql(scripts = "classpath:database/delete-categories-table.sql",
+@Sql(scripts = "classpath:database/category/add-categories-input-data.sql")
+@Sql(scripts = "classpath:database/category/delete-categories-table.sql",
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class CategoryControllerTest {
-    protected static MockMvc mockMvc;
+    private static MockMvc mockMvc;
 
     @Autowired
     private ObjectMapper objectMapper;
