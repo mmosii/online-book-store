@@ -4,9 +4,9 @@
 
 # Welcome to NovelNook Online Bookstore 📖✨
 
-Step into our online bookstore, a sanctuary born from a *love for literature* and a commitment to redefine the reading experience. Fueled by the desire to blend the traditional bookstores with modern convenience, our project addresses the need for an accessible store where the joy of discovering new worlds aligns with the pace of contemporary life.
+Step into our online bookstore, a sanctuary born from a love for literature and a commitment to redefine the reading experience. Fueled by the desire to blend the traditional bookstores with modern convenience, our project addresses the need for an accessible store where the joy of discovering new worlds aligns with the pace of contemporary life.
 
-Join us on a digital journey where *pages transform into portals*, inviting you to **explore, imagine, and discover** the timeless magic held within the covers of each book.
+Join us on a digital journey where pages transform into portals, inviting you to **explore, imagine, and discover** the timeless magic held within the covers of each book.
 
 
 ## Project Technologies
