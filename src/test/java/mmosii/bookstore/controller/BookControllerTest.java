@@ -27,12 +27,12 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = {"classpath:database/add-categories-input-data.sql",
-        "classpath:database/add-books-input-data.sql",
-        "classpath:database/add-books-categories-input-data.sql"})
-@Sql(scripts = {"classpath:database/delete-books-categories-table.sql",
-        "classpath:database/delete-books-table.sql",
-        "classpath:database/delete-categories-table.sql"},
+@Sql(scripts = {"classpath:database/category/add-categories-input-data.sql",
+        "classpath:database/book/add-books-input-data.sql",
+        "classpath:database/category/add-books-categories-input-data.sql"})
+@Sql(scripts = {"classpath:database/category/delete-books-categories-table.sql",
+        "classpath:database/book/delete-books-table.sql",
+        "classpath:database/category/delete-categories-table.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class BookControllerTest {
     private static MockMvc mockMvc;

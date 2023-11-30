@@ -13,7 +13,7 @@ import mmosii.bookstore.dto.shoppingcart.CartItemDto;
 import mmosii.bookstore.dto.shoppingcart.CartItemRequestDto;
 import mmosii.bookstore.dto.shoppingcart.CartItemUpdateDto;
 import mmosii.bookstore.dto.shoppingcart.ShoppingCartDto;
-import mmosii.bookstore.repository.book.BookRepository;
+import mmosii.bookstore.repository.shoppingcart.CartItemRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,15 +28,23 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Sql(scripts = {"classpath:database/add-shopping-cart-and-user.sql",
-        "classpath:database/add-books-and-categories-to-books-table.sql"})
-@Sql(scripts = {"classpath:database/delete-shoppingcarts-and-user.sql",
-        "classpath:database/delete-books-and-categories-from-books-table.sql"},
+@Sql(scripts = {"classpath:database/category/add-categories-input-data.sql",
+        "classpath:database/book/add-books-input-data.sql",
+        "classpath:database/category/add-books-categories-input-data.sql",
+        "classpath:database/user/add-users-input-data.sql",
+        "classpath:database/shoppingcart/add-shopping-cart-input-data.sql",
+        "classpath:database/cartitem/add-cart-items-input-data.sql"})
+@Sql(scripts = {"classpath:database/cartitem/delete-cart-items-table.sql",
+        "classpath:database/shoppingcart/delete-shopping-cart-table.sql",
+        "classpath:database/user/delete-users-table.sql",
+        "classpath:database/category/delete-books-categories-table.sql",
+        "classpath:database/book/delete-books-table.sql",
+        "classpath:database/category/delete-categories-table.sql"},
         executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
 public class ShoppingCartControllerTest {
     private static MockMvc mockMvc;
     @Autowired
-    private BookRepository bookRepository;
+    private CartItemRepository cartItemRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -114,11 +122,10 @@ public class ShoppingCartControllerTest {
     void deleteBookFromCart_validId() throws Exception {
         Long id = 6L;
 
-        mockMvc.perform(delete("/api/cart/cart-items/" + id)
-                        .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(delete("/api/cart/cart-items/" + id))
                 .andExpect(status().isNoContent())
                 .andReturn();
 
-        assertThat(bookRepository.findById(id)).isEmpty();
+        assertThat(cartItemRepository.findById(id)).isEmpty();
     }
 }
