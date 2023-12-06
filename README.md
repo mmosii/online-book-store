@@ -149,7 +149,7 @@ Add necessary environment variables.**
 
 ## Test with Swagger on AWS
 
-Access the AWS deployment at [http://ec2-107-20-71-245.compute-1.amazonaws.com/swagger-ui/index.html](http://ec2-107-20-71-245.compute-1.amazonaws.com/swagger-ui/index.html).
+Access the AWS deployment at [http://ec2-107-23-175-164.compute-1.amazonaws.com/swagger-ui/index.html](http://ec2-107-23-175-164.compute-1.amazonaws.com/swagger-ui/index.html).
 
 If testing admin endpoints, use the following credentials:
 
